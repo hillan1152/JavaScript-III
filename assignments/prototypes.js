@@ -15,13 +15,13 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
-function GameObject(createdAt, name, dimensions) {
-  this.createdAt = createdAt,
-  this.name = name,
-  this.dimensions = dimensions
+function GameObject(attr) {
+  this.createdAt = attr.createdAt,
+  this.name = attr.name,
+  this.dimensions = attr.dimensions
 }
 GameObject.prototype.destroy = function() {
-  return `${this.name} was removed from the game.`
+  return `${this.name} was removed from the game.`;
 }
 
 /*
@@ -30,18 +30,14 @@ GameObject.prototype.destroy = function() {
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
-function CharacterStats(healthpoints) {
-  this.healthpoints = healthpoints;
-  this.createdAt = createdAt,
-  this.name = name,
-  this.dimensions = dimensions
-  GameObject.call(this);
+function CharacterStats(attr) {
+  GameObject.call(this, attr),
+  this.healthpoints = attr.healthpoints
+  CharacterStats.prototype = Object.create(GameObject.prototype);
 }
-CharacterStats.prototype.takeDamage = function(name) {
-  return `${this.name} took damage.`
-}
-console.log(CharacterStats());
-
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`;
+};
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
@@ -51,20 +47,17 @@ console.log(CharacterStats());
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
-function Humanoid(team, weapons, language, healthpoints, createdAt, name, dimensions) {
-  this.team = team;
-  this.weapons = weapons;
-  this.language = language;
-  this.healthpoints = healthpoints;
-  this.createdAt = createdAt,
-  this.name = name,
-  this.dimensions = dimensions
-  GameObject.call(this);
-  CharacterStats.call(this);
-}
+
+
+function Humanoid(attr) {
+  CharacterStats.call(this, attr),
+  this.team = attr.team,
+  this.weapons = attr.weapons,
+  this.language = attr.language
+};
 
 Humanoid.prototype.greet = function() {
-  `${this.name} offers a  greeting in ${this.language}.`
+  return `${this.name} offers a greeting in ${this.language}.`
 }
 
  
@@ -137,7 +130,7 @@ Humanoid.prototype.greet = function() {
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
